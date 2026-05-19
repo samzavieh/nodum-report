@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NODUM — Annual Report 2024</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --void:#0e0e0e;--bone:#f7f6f2;--signal:#c0392b;--field:#888780;--trace:#d4d2c9;
+  --mono:'IBM Plex Mono',monospace;--grotesk:'Helvetica Neue','Helvetica','Arial',sans-serif;
+}
+html,body{margin:0;padding:0;width:100%;background:var(--void);font-family:var(--grotesk)}
+.nav{
+  position:relative;z-index:100;
+  background:var(--void);border-bottom:1px solid var(--signal);
+  display:flex;align-items:center;padding:0 48px;height:44px;
+}
+.nav-mark{font-family:var(--grotesk);font-size:11px;font-weight:700;letter-spacing:0.2em;color:var(--bone);text-transform:uppercase;margin-right:32px;flex-shrink:0}
+.nav-mark em{color:var(--signal);font-style:normal}
+.nav-links{display:flex;gap:0;flex:1}
+.nav-btn{
+  font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.14em;
+  color:var(--field);text-transform:uppercase;background:none;border:none;cursor:pointer;
+  padding:0 20px;height:44px;border-left:0.5px solid rgba(247,246,242,0.08);
+  transition:color 0.15s,background 0.15s;
+}
+.nav-btn:hover{color:var(--bone);background:rgba(247,246,242,0.05)}
+.nav-btn.active{color:var(--signal);border-bottom:2px solid var(--signal)}
+.nav-year{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.14em;color:var(--signal);margin-left:auto}
+.document{width:100%;background:white}
+.section{display:none}
+.section.active{display:block}
+.spread-header{
+  border-bottom:0.5px solid var(--void);padding:14px 48px;
+  display:flex;justify-content:space-between;align-items:baseline;background:white;
+}
+.spread-folio{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.18em;color:var(--field);text-transform:uppercase}
+.spread-folio-num{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.12em;color:var(--signal)}
+
+/* COVER */
+.cover{background:var(--void);height:600px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:48px}
+.cgv{position:absolute;top:0;bottom:0;width:0.5px;background:rgba(247,246,242,0.05)}
+.cgh{position:absolute;left:0;right:0;height:0.5px;background:rgba(247,246,242,0.05)}
+.cover-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2}
+.cover-wordmark{font-family:var(--grotesk);font-size:11px;font-weight:700;letter-spacing:0.22em;color:var(--bone);text-transform:uppercase}
+.cover-meta{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.14em;color:var(--field);text-transform:uppercase;text-align:right;line-height:2}
+.cover-body{position:relative;z-index:2}
+.cg12{display:grid;grid-template-columns:repeat(12,1fr);column-gap:8px;align-items:end}
+.cover-headline{grid-column:1/9;font-family:var(--grotesk);font-size:clamp(48px,8vw,100px);font-weight:700;letter-spacing:-0.04em;line-height:0.9;color:var(--bone)}
+.cover-headline em{color:var(--signal);font-style:normal}
+.cover-right{grid-column:9/13;padding-bottom:6px}
+.cover-rule{width:32px;height:2px;background:var(--signal);margin-bottom:12px}
+.cover-tagline{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.12em;color:var(--field);text-transform:uppercase;line-height:2;border-top:0.5px solid rgba(247,246,242,0.12);padding-top:12px}
+
+/* LETTER */
+.letter-spread{padding:40px 48px 56px;background:white;min-height:calc(100vh - 88px)}
+.lg{display:grid;grid-template-columns:repeat(12,1fr);column-gap:8px}
+.letter-l{grid-column:1/5;border-right:0.5px solid var(--trace);padding-right:24px}
+.letter-heading{font-family:var(--grotesk);font-size:36px;font-weight:700;letter-spacing:-0.025em;line-height:1.05;color:var(--void);margin-bottom:20px}
+.letter-heading em{color:var(--signal);font-style:normal}
+.letter-byline{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.12em;color:var(--field);text-transform:uppercase;line-height:2}
+.letter-r{grid-column:5/13;padding-left:24px}
+.letter-cols{column-count:2;column-gap:24px}
+.lp{font-family:var(--grotesk);font-size:12px;line-height:1.75;color:var(--void);margin-bottom:12px;break-inside:avoid}
+.pull{font-family:var(--grotesk);font-size:16px;font-weight:700;line-height:1.4;letter-spacing:-0.01em;color:var(--void);border-left:2px solid var(--signal);padding-left:14px;margin-bottom:14px;break-inside:avoid}
+.letter-sig{margin-top:20px;border-top:0.5px solid var(--trace);padding-top:14px;font-family:var(--grotesk);font-size:11px;color:var(--field)}
+
+/* METRICS */
+.metrics-band{border-top:0.5px solid var(--void);border-bottom:0.5px solid var(--void);display:grid;grid-template-columns:repeat(4,1fr);background:white}
+.mc{padding:28px;border-right:0.5px solid var(--void)}
+.mc:last-child{border-right:none}
+.ml{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.16em;color:var(--field);text-transform:uppercase;margin-bottom:8px}
+.mv{font-family:var(--grotesk);font-size:40px;font-weight:700;letter-spacing:-0.035em;line-height:1;color:var(--void)}
+.mv em{color:var(--signal);font-style:normal}
+.md{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.1em;color:var(--signal);margin-top:6px}
+.chart-spread{padding:40px 48px 56px;background:var(--bone);min-height:calc(100vh - 300px)}
+.cg{display:grid;grid-template-columns:repeat(12,1fr);column-gap:8px}
+.chart-label{grid-column:1/3}
+.chart-body{grid-column:3/13}
+.ch{font-family:var(--grotesk);font-size:13px;font-weight:700;letter-spacing:-0.01em;color:var(--void);margin-bottom:4px}
+.cs{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.1em;color:var(--field);text-transform:uppercase;line-height:1.8}
+.bcw{display:flex;align-items:flex-end;gap:6px;height:180px;border-bottom:0.5px solid var(--void);border-left:0.5px solid var(--trace);padding:0 0 0 12px;position:relative;margin-bottom:10px}
+.yr{position:absolute;left:12px;right:0;height:0.5px;background:var(--trace)}
+.yl{position:absolute;left:-32px;font-family:var(--mono);font-size:8px;font-weight:300;color:var(--field);transform:translateY(50%)}
+.bg{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;flex:1;height:100%;position:relative;z-index:1}
+.b{width:100%;background:var(--void);position:relative}
+.b.sig{background:var(--signal)}
+.b.lt{background:var(--trace)}
+.bv{font-family:var(--mono);font-size:8px;font-weight:300;color:var(--field);position:absolute;top:-16px;left:50%;transform:translateX(-50%);white-space:nowrap}
+.bv.sv{color:var(--signal)}
+.bt{font-family:var(--mono);font-size:8px;font-weight:300;color:var(--field);margin-top:8px}
+.bt.sv{color:var(--signal)}
+.dr{display:grid;grid-template-columns:180px 1fr;gap:40px;align-items:center;margin-top:36px;border-top:0.5px solid var(--trace);padding-top:36px}
+.lh{font-family:var(--grotesk);font-size:12px;font-weight:700;letter-spacing:-0.01em;color:var(--void);margin-bottom:14px}
+.lr{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;border-bottom:0.5px solid var(--trace);padding-bottom:10px}
+.ls{width:8px;height:8px;flex-shrink:0;margin-top:2px}
+.ln{font-family:var(--grotesk);font-size:11px;color:var(--void);flex:1}
+.lp2{font-family:var(--mono);font-size:10px;font-weight:300;color:var(--field)}
+.lv{font-family:var(--mono);font-size:10px;font-weight:300;color:var(--signal)}
+
+/* FILMS */
+.films-spread{background:var(--void);padding:0;min-height:calc(100vh - 88px)}
+.fh{border-bottom:0.5px solid rgba(247,246,242,0.12);padding:14px 48px;display:flex;justify-content:space-between;align-items:baseline}
+.fhl{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.2em;color:var(--field);text-transform:uppercase}
+.fhl span{color:var(--signal);margin-right:10px}
+.films-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.film-card{padding:0;border-right:0.5px solid rgba(247,246,242,0.06);border-bottom:0.5px solid rgba(247,246,242,0.06);cursor:pointer;position:relative;overflow:hidden}
+.film-card:nth-child(4n){border-right:none}
+.film-card:hover .fo{opacity:1}
+.film-card:hover .fi{transform:scale(1.04)}
+.fiw{width:100%;aspect-ratio:1/1;overflow:hidden;background:#111;position:relative}
+.fi{width:100%;height:100%;object-fit:cover;filter:grayscale(0.15) contrast(1.05);transition:transform 0.35s ease;display:block}
+.fo{position:absolute;inset:0;background:rgba(192,57,43,0.1);opacity:0;transition:opacity 0.2s;display:flex;align-items:flex-start;justify-content:flex-end;padding:10px}
+.fp{width:26px;height:26px;border:1px solid var(--signal);display:flex;align-items:center;justify-content:center}
+.fp svg{width:9px;height:9px}
+.film-info{padding:14px 16px 18px}
+.fe{font-family:var(--mono);font-size:8px;font-weight:300;letter-spacing:0.18em;color:var(--signal);text-transform:uppercase;margin-bottom:5px}
+.ft{font-family:var(--grotesk);font-size:13px;font-weight:700;letter-spacing:-0.01em;color:var(--bone);margin-bottom:3px}
+.fm{font-family:var(--mono);font-size:8px;font-weight:300;letter-spacing:0.1em;color:var(--field);text-transform:uppercase}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;z-index:200;background:rgba(14,14,14,0.96);align-items:center;justify-content:center;flex-direction:column}
+.lightbox.open{display:flex}
+.lb-header{width:100%;max-width:900px;padding:20px 48px;display:flex;justify-content:space-between;align-items:flex-start;flex-shrink:0}
+.lb-ep{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.18em;color:var(--signal);text-transform:uppercase;margin-bottom:4px}
+.lb-title{font-family:var(--grotesk);font-size:20px;font-weight:700;letter-spacing:-0.02em;color:var(--bone);margin-bottom:2px}
+.lb-mech{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.12em;color:var(--field);text-transform:uppercase}
+.lb-close{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.14em;color:var(--field);text-transform:uppercase;background:none;border:0.5px solid rgba(247,246,242,0.2);cursor:pointer;padding:8px 16px;transition:color 0.15s,border-color 0.15s;flex-shrink:0;margin-top:4px}
+.lb-close:hover{color:var(--bone);border-color:var(--bone)}
+.lb-img-wrap{flex:1;width:100%;max-width:900px;display:flex;align-items:center;justify-content:center;padding:0 48px 16px;overflow:hidden}
+.lb-img{max-width:100%;max-height:calc(100vh - 220px);object-fit:contain;border:0.5px solid rgba(247,246,242,0.08)}
+.lb-nav{display:flex;gap:0;width:100%;max-width:900px;padding:0 48px 28px;justify-content:space-between;align-items:center;flex-shrink:0}
+.lb-nav-btn{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.14em;color:var(--field);text-transform:uppercase;background:none;border:0.5px solid rgba(247,246,242,0.15);cursor:pointer;padding:10px 24px;transition:color 0.15s,border-color 0.15s}
+.lb-nav-btn:hover{color:var(--bone);border-color:rgba(247,246,242,0.4)}
+.lb-nav-btn:disabled{opacity:0.2;cursor:default}
+.lb-counter{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.2em;color:var(--field);text-align:center;margin-bottom:10px}
+.lb-dots{display:flex;gap:8px;align-items:center;justify-content:center}
+.lb-dot{width:4px;height:4px;background:rgba(247,246,242,0.2);cursor:pointer;transition:background 0.15s}
+.lb-dot.active{background:var(--signal)}
+
+/* MARKETS */
+.markets-spread{padding:40px 48px 56px;background:var(--bone);min-height:calc(100vh - 250px)}
+.mg{display:grid;grid-template-columns:repeat(12,1fr);column-gap:8px}
+.markets-l{grid-column:1/4;border-right:0.5px solid var(--trace);padding-right:24px}
+.markets-heading{font-family:var(--grotesk);font-size:28px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:var(--void);margin-bottom:16px}
+.markets-heading em{color:var(--signal);font-style:normal;display:block}
+.markets-sub{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.12em;color:var(--field);text-transform:uppercase;line-height:2}
+.markets-r{grid-column:4/13;padding-left:24px}
+.mt{width:100%;border-collapse:collapse}
+.mt th{font-family:var(--mono);font-size:8px;font-weight:300;letter-spacing:0.16em;color:var(--field);text-transform:uppercase;text-align:left;border-bottom:0.5px solid var(--void);padding:0 0 10px}
+.mt td{font-family:var(--grotesk);font-size:12px;color:var(--void);padding:12px 0;border-bottom:0.5px solid var(--trace);vertical-align:top}
+.mono-cell{font-family:var(--mono) !important;font-size:10px !important;font-weight:300;color:var(--field) !important}
+.sig-cell{font-family:var(--mono) !important;font-size:10px !important;font-weight:300;color:var(--signal) !important}
+.mkt-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--signal);margin-right:8px;vertical-align:middle}
+.totals-row{display:flex;gap:40px;margin-top:24px;padding-top:16px;border-top:0.5px solid var(--trace)}
+.tl{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.14em;color:var(--field);text-transform:uppercase;margin-bottom:6px}
+.tv{font-family:var(--grotesk);font-size:28px;font-weight:700;letter-spacing:-0.02em;color:var(--void)}
+.tv.sig{color:var(--signal)}
+.back{background:var(--void);height:200px;padding:40px 48px;display:grid;grid-template-columns:repeat(12,1fr);column-gap:8px;align-items:center;border-top:2px solid var(--signal)}
+.back-mark{grid-column:1/5;font-family:var(--grotesk);font-size:28px;font-weight:700;letter-spacing:-0.02em;color:var(--bone)}
+.back-mark em{color:var(--signal);font-style:normal}
+.back-copy{grid-column:5/10;font-family:var(--grotesk);font-size:11px;line-height:1.7;color:var(--field)}
+.back-meta{grid-column:10/13;text-align:right}
+.back-url{font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.1em;color:var(--signal);text-transform:uppercase;display:block;margin-bottom:6px}
+.back-legal{font-family:var(--mono);font-size:8px;font-weight:300;letter-spacing:0.08em;color:var(--field);line-height:1.8}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-mark"><img src="data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3Csvg%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20version%3D%221.1%22%20viewBox%3D%220%200%20732.6%20189.6%22%3E%0A%20%20%3C%21--%20Generator%3A%20Adobe%20Illustrator%2030.3.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%202.1.3%20Build%20182%29%20%20--%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20.st0%20%7B%0A%20%20%20%20%20%20%20%20fill%3A%20%23fff%3B%0A%20%20%20%20%20%20%20%20font-family%3A%20%27Helvetica%20Neue%27%2C%20Helvetica%2C%20Arial%2C%20sans-serif%3B%0A%20%20%20%20%20%20%20%20font-size%3A%20168px%3B%0A%20%20%20%20%20%20%20%20font-weight%3A%20500%3B%0A%20%20%20%20%20%20%20%20letter-spacing%3A%200em%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%3C/style%3E%0A%20%20%3C/defs%3E%0A%20%20%3Ctext%20class%3D%22st0%22%20transform%3D%22translate%2858.7%20157%29%22%3E%3Ctspan%20x%3D%220%22%20y%3D%220%22%3ENODUM%3C/tspan%3E%3C/text%3E%0A%3C/svg%3E" alt="NODUM" style="height:20px;display:block"></div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showSection('cover',this)">Cover</button>
+    <button class="nav-btn" onclick="showSection('letter',this)">Letter</button>
+    <button class="nav-btn" onclick="showSection('metrics',this)">Metrics</button>
+    <button class="nav-btn" onclick="showSection('films',this)">Films</button>
+    <button class="nav-btn" onclick="showSection('markets',this)">Markets</button>
+  </div>
+  <div class="nav-year">FY 2024</div>
+</nav>
+<div class="document">
+
+<div id="sec-cover" class="section active">
+<div class="cover">
+  <div class="cgv" style="left:8.3%"></div><div class="cgv" style="left:25%"></div>
+  <div class="cgv" style="left:41.7%"></div><div class="cgv" style="left:58.3%"></div>
+  <div class="cgv" style="left:75%"></div><div class="cgv" style="left:91.7%"></div>
+  <div class="cgh" style="top:80px"></div><div class="cgh" style="bottom:100px"></div>
+  <svg style="position:absolute;right:48px;top:50%;transform:translateY(-52%);opacity:0.08" width="260" height="260" viewBox="0 0 260 260" fill="none">
+    <circle cx="130" cy="130" r="102" stroke="#f7f6f2" stroke-width="0.5"/>
+    <circle cx="130" cy="130" r="62" stroke="#f7f6f2" stroke-width="0.5"/>
+    <circle cx="130" cy="130" r="22" stroke="#c0392b" stroke-width="0.5"/>
+    <line x1="28" y1="130" x2="232" y2="130" stroke="#f7f6f2" stroke-width="0.5"/>
+    <line x1="130" y1="28" x2="130" y2="232" stroke="#f7f6f2" stroke-width="0.5"/>
+    <circle cx="130" cy="130" r="4" fill="#c0392b"/>
+    <circle cx="130" cy="68" r="2.5" fill="#f7f6f2"/><circle cx="130" cy="192" r="2.5" fill="#f7f6f2"/>
+    <circle cx="68" cy="130" r="2.5" fill="#f7f6f2"/><circle cx="192" cy="130" r="2.5" fill="#f7f6f2"/>
+  </svg>
+  <div class="cover-top">
+    <div></div>
+    <div class="cover-meta">Systems Intelligence<br>Annual Report<br><span style="color:var(--signal)">FY 2024</span></div>
+  </div>
+  <div class="cover-body">
+    <div class="cg12">
+      <div class="cover-headline">AN<em>&#8212;</em><br>NUAL<br>RE<em>&#8212;</em><br>PORT</div>
+      <div class="cover-right">
+        <div class="cover-rule"></div>
+        <div class="cover-tagline">Underneath Campaign<br>Visual Systems<br>Documentation<br><br>nodum.systems<br><span style="color:var(--signal)">FY 2024</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="sec-letter" class="section">
+  <div class="spread-header"><span class="spread-folio"><span style="color:var(--signal)">01 / </span>Letter to stakeholders</span><span class="spread-folio-num">02</span></div>
+  <div class="letter-spread">
+    <div class="lg">
+      <div class="letter-l">
+        <div class="letter-heading">The math<br>was always<br><em>there.</em></div>
+        <div class="letter-byline">From the CEO<br>NODUM Systems Intelligence<br>FY 2024<br><br><span style="color:var(--signal)">12 mechanisms<br>7 markets<br>1 system</span></div>
+      </div>
+      <div class="letter-r">
+        <div class="letter-cols">
+          <p class="lp">This year NODUM did something most enterprise software companies have not done in a decade: it made the invisible visible. Not through abstraction. Not through metaphor. Through direct, diagrammatic evidence of the mechanisms that run modern organizations.</p>
+          <p class="pull">If you cannot see the system, you cannot trust the outcome.</p>
+          <p class="lp">The Underneath campaign was not a marketing exercise. It was a proof of concept — that systems intelligence, when communicated with the precision of the systems it describes, changes the way organizations make decisions. Twelve films. Six surfaces. One argument.</p>
+          <p class="lp">We deployed across seven US markets simultaneously. We placed in the Wall Street Journal, the Financial Times, and Wired. We do not believe in aspiration without mechanism.</p>
+          <p class="lp">Revenue grew 47% year-over-year. Enterprise contract value increased by $18M. The film series generated 2.3M verified impressions in the first ninety days without a single paid social placement. The system did the work. It always does.</p>
+        </div>
+        <div class="letter-sig">Amir Nouri, Chief Executive Officer &nbsp;&#183;&nbsp; January 2025</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="sec-metrics" class="section">
+  <div class="spread-header"><span class="spread-folio"><span style="color:var(--signal)">02 / </span>Performance metrics</span><span class="spread-folio-num">04</span></div>
+  <div class="metrics-band">
+    <div class="mc"><div class="ml">Annual Recurring Revenue</div><div class="mv">$74<em>M</em></div><div class="md">&#8593; 47% YoY</div></div>
+    <div class="mc"><div class="ml">Enterprise Clients</div><div class="mv">312<em>+</em></div><div class="md">&#8593; 89 new this year</div></div>
+    <div class="mc"><div class="ml">Film Impressions</div><div class="mv">2.3<em>M</em></div><div class="md">First 90 days organic</div></div>
+    <div class="mc"><div class="ml">Avg Contract Value</div><div class="mv">$238<em>K</em></div><div class="md">&#8593; $42K from prior year</div></div>
+  </div>
+  <div class="chart-spread">
+    <div class="cg">
+      <div class="chart-label"><div class="ch">Revenue</div><div class="cs">FY 2020&#8211;2024<br>USD millions<br><br><span style="color:var(--signal)">2024 record<br>$74M ARR</span></div></div>
+      <div class="chart-body">
+        <div class="bcw">
+          <div class="yr" style="bottom:144px"><span class="yl">80</span></div>
+          <div class="yr" style="bottom:108px"><span class="yl">60</span></div>
+          <div class="yr" style="bottom:72px"><span class="yl">40</span></div>
+          <div class="yr" style="bottom:36px"><span class="yl">20</span></div>
+          <div class="bg"><div class="b lt" style="height:47px"><span class="bv">$26M</span></div><div class="bt">2020</div></div>
+          <div class="bg"><div class="b lt" style="height:61px"><span class="bv">$34M</span></div><div class="bt">2021</div></div>
+          <div class="bg"><div class="b" style="height:81px"><span class="bv">$45M</span></div><div class="bt">2022</div></div>
+          <div class="bg"><div class="b" style="height:90px"><span class="bv">$50M</span></div><div class="bt">2023</div></div>
+          <div class="bg"><div class="b sig" style="height:133px"><span class="bv sv">$74M</span></div><div class="bt sv">2024</div></div>
+        </div>
+        <div class="dr">
+          <svg width="180" height="180" viewBox="0 0 180 180">
+            <circle cx="90" cy="90" r="68" fill="none" stroke="#d4d2c9" stroke-width="18"/>
+            <circle cx="90" cy="90" r="68" fill="none" stroke="#0e0e0e" stroke-width="18" stroke-dasharray="247.8 179.5" stroke-dashoffset="106.8" transform="rotate(-90 90 90)"/>
+            <circle cx="90" cy="90" r="68" fill="none" stroke="#888780" stroke-width="18" stroke-dasharray="115.4 311.9" stroke-dashoffset="-141.0" transform="rotate(-90 90 90)"/>
+            <circle cx="90" cy="90" r="68" fill="none" stroke="#c0392b" stroke-width="18" stroke-dasharray="64.1 363.2" stroke-dashoffset="-256.4" transform="rotate(-90 90 90)"/>
+            <text x="90" y="84" text-anchor="middle" font-family="Helvetica Neue,sans-serif" font-size="20" font-weight="700" fill="#0e0e0e">$74M</text>
+            <text x="90" y="100" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" font-weight="300" fill="#888780" letter-spacing="1">ARR 2024</text>
+          </svg>
+          <div>
+            <div class="lh">Revenue by Segment</div>
+            <div class="lr"><div class="ls" style="background:var(--void)"></div><span class="ln">Enterprise</span><span class="lp2">58%</span><span class="lv">$42.9M</span></div>
+            <div class="lr"><div class="ls" style="background:var(--field)"></div><span class="ln">Mid-Market</span><span class="lp2">27%</span><span class="lv">$20.0M</span></div>
+            <div class="lr"><div class="ls" style="background:var(--signal)"></div><span class="ln">SMB</span><span class="lp2">15%</span><span class="lv">$11.1M</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="sec-films" class="section">
+  <div class="spread-header" style="background:var(--void);border-bottom-color:rgba(247,246,242,0.12)">
+    <span class="spread-folio" style="color:var(--field)"><span style="color:var(--signal)">03 / </span>Mechanism film series &#8212; Underneath</span>
+    <span class="spread-folio-num">06</span>
+  </div>
+  <div class="films-spread">
+    <div class="fh"><span class="fhl"><span>03 / </span>12 films &nbsp;&#183;&nbsp; 16:9 &nbsp;&#183;&nbsp; --style raw</span><span style="font-family:var(--mono);font-size:9px;font-weight:300;letter-spacing:0.12em;color:var(--field)">Click to view</span></div>
+    <div class="films-grid" id="films-grid"></div>
+  </div>
+</div>
+
+<div id="sec-markets" class="section">
+  <div class="spread-header"><span class="spread-folio"><span style="color:var(--signal)">04 / </span>Campaign markets</span><span class="spread-folio-num">08</span></div>
+  <div class="markets-spread">
+    <div class="mg">
+      <div class="markets-l">
+        <div class="markets-heading">Seven<br>US<br><em>Markets</em></div>
+        <div class="markets-sub">OOH + Print<br>Simultaneous<br>Deployment<br><br>WSJ / FT / Wired<br><span style="color:var(--signal)">Q2&#8211;Q4 2024</span></div>
+      </div>
+      <div class="markets-r">
+        <table class="mt">
+          <thead><tr><th>City</th><th>Formats</th><th>Placements</th><th>Impressions</th></tr></thead>
+          <tbody>
+            <tr><td><span class="mkt-dot"></span><strong>New York</strong></td><td class="mono-cell">48-sheet &#183; Bus shelter &#183; Transit</td><td class="mono-cell">24</td><td class="sig-cell">680K</td></tr>
+            <tr><td><span class="mkt-dot"></span><strong>San Francisco</strong></td><td class="mono-cell">48-sheet &#183; Bus shelter</td><td class="mono-cell">18</td><td class="sig-cell">420K</td></tr>
+            <tr><td><span class="mkt-dot"></span><strong>Chicago</strong></td><td class="mono-cell">48-sheet &#183; Transit</td><td class="mono-cell">14</td><td class="sig-cell">310K</td></tr>
+            <tr><td><span class="mkt-dot"></span><strong>Los Angeles</strong></td><td class="mono-cell">48-sheet &#183; Bus shelter</td><td class="mono-cell">16</td><td class="sig-cell">290K</td></tr>
+            <tr><td><span class="mkt-dot"></span><strong>Boston</strong></td><td class="mono-cell">Transit &#183; Bus shelter</td><td class="mono-cell">12</td><td class="sig-cell">210K</td></tr>
+            <tr><td><span class="mkt-dot"></span><strong>Seattle</strong></td><td class="mono-cell">48-sheet</td><td class="mono-cell">10</td><td class="sig-cell">180K</td></tr>
+            <tr><td style="border-bottom:none"><span class="mkt-dot"></span><strong>Austin</strong></td><td class="mono-cell" style="border-bottom:none">48-sheet &#183; Bus shelter</td><td class="mono-cell" style="border-bottom:none">8</td><td class="sig-cell" style="border-bottom:none">210K</td></tr>
+          </tbody>
+        </table>
+        <div class="totals-row">
+          <div><div class="tl">Total Placements</div><div class="tv">102</div></div>
+          <div><div class="tl">Total Impressions</div><div class="tv sig">2.3M</div></div>
+          <div><div class="tl">Print Publications</div><div class="tv">3</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="back">
+    <div class="back-mark"><img src="data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3Csvg%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20version%3D%221.1%22%20viewBox%3D%220%200%20732.6%20189.6%22%3E%0A%20%20%3C%21--%20Generator%3A%20Adobe%20Illustrator%2030.3.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%202.1.3%20Build%20182%29%20%20--%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20.st0%20%7B%0A%20%20%20%20%20%20%20%20fill%3A%20%23fff%3B%0A%20%20%20%20%20%20%20%20font-family%3A%20%27Helvetica%20Neue%27%2C%20Helvetica%2C%20Arial%2C%20sans-serif%3B%0A%20%20%20%20%20%20%20%20font-size%3A%20168px%3B%0A%20%20%20%20%20%20%20%20font-weight%3A%20500%3B%0A%20%20%20%20%20%20%20%20letter-spacing%3A%200em%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%3C/style%3E%0A%20%20%3C/defs%3E%0A%20%20%3Ctext%20class%3D%22st0%22%20transform%3D%22translate%2858.7%20157%29%22%3E%3Ctspan%20x%3D%220%22%20y%3D%220%22%3ENODUM%3C/tspan%3E%3C/text%3E%0A%3C/svg%3E" alt="NODUM" style="height:22px;display:block"></div>
+    <div class="back-copy">Modern organizations run on systems no one built to be understood. NODUM makes the invisible logic underneath modern business visible, legible, and defensible.</div>
+    <div class="back-meta">
+      <span class="back-url">nodum.systems</span>
+      <div class="back-legal">Systems Intelligence<br>Annual Report FY 2024<br>Self-initiated project<br>Sam Zavieh, CD<br><span style="color:var(--signal)">samzavieh.com</span></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="lightbox" id="lightbox">
+  <div class="lb-header">
+    <div><div class="lb-ep" id="lb-ep"></div><div class="lb-title" id="lb-title"></div><div class="lb-mech" id="lb-mech"></div></div>
+    <button class="lb-close" onclick="closeLightbox()">Close &nbsp;&#10005;</button>
+  </div>
+  <div class="lb-img-wrap"><img class="lb-img" id="lb-img" src="" alt=""></div>
+  <div class="lb-nav">
+    <button class="lb-nav-btn" id="lb-prev" onclick="lbNav(-1)">&#8592; Prev</button>
+    <div style="text-align:center">
+      <div class="lb-counter" id="lb-counter"></div>
+      <div class="lb-dots" id="lb-dots"></div>
+    </div>
+    <button class="lb-nav-btn" id="lb-next" onclick="lbNav(1)">Next &#8594;</button>
+  </div>
+</div>
+
+<script>
+const IMGS = {
+  ep01: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Cg%20opacity%3D%270.18%27%3E%3Crect%20x%3D%274%27%20y%3D%278%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2712%27%20y%3D%273%27%20width%3D%272%27%20height%3D%272%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2720%27%20y%3D%2712%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2728%27%20y%3D%275%27%20width%3D%272%27%20height%3D%272%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2736%27%20y%3D%2715%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2744%27%20y%3D%272%27%20width%3D%272%27%20height%3D%272%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2752%27%20y%3D%2710%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2760%27%20y%3D%276%27%20width%3D%272%27%20height%3D%272%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%274%27%20y%3D%2722%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2712%27%20y%3D%2717%27%20width%3D%272%27%20height%3D%272%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2720%27%20y%3D%2726%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2728%27%20y%3D%2719%27%20width%3D%272%27%20height%3D%272%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2736%27%20y%3D%2729%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%274%27%20y%3D%2736%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2712%27%20y%3D%2731%27%20width%3D%272%27%20height%3D%272%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2720%27%20y%3D%2740%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%274%27%20y%3D%2750%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2720%27%20y%3D%2754%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2736%27%20y%3D%2757%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2712%27%20y%3D%2765%27%20width%3D%272%27%20height%3D%272%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2728%27%20y%3D%2769%27%20width%3D%272%27%20height%3D%272%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%274%27%20y%3D%2778%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%2720%27%20y%3D%2792%27%20width%3D%273%27%20height%3D%273%27%20fill%3D%27%230e0e0e%27/%3E%3Crect%20x%3D%278%27%20y%3D%27108%27%20width%3D%272%27%20height%3D%272%27%20fill%3D%27%230e0e0e%27/%3E%3C/g%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27140%27%20cy%3D%27100%27%20r%3D%2750%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20opacity%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27140%27%20cy%3D%27100%27%20r%3D%2732%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20opacity%3D%270.6%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27140%27%20cy%3D%27100%27%20r%3D%2716%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20opacity%3D%270.9%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27140%27%20cy%3D%27100%27%20r%3D%273%27%20fill%3D%27%23c0392b%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2790%27%20y1%3D%27100%27%20x2%3D%27190%27%20y2%3D%27100%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27%20opacity%3D%270.3%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27140%27%20y1%3D%2750%27%20x2%3D%27140%27%20y2%3D%27150%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27%20opacity%3D%270.3%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2775%27%20y1%3D%27100%27%20x2%3D%2788%27%20y2%3D%27100%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%2785%2C96%2090%2C100%2085%2C104%27%20fill%3D%27none%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27190%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3ET%3D0%20%E2%86%92%20T%3D%E2%88%9E%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep02: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2760%27%20cy%3D%2760%27%20r%3D%2742%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20opacity%3D%270.6%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27140%27%20cy%3D%2760%27%20r%3D%2742%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20opacity%3D%270.6%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2760%27%20cy%3D%27140%27%20r%3D%2742%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20opacity%3D%270.6%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27140%27%20cy%3D%27140%27%20r%3D%2742%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20opacity%3D%270.6%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2760%27%20y1%3D%2760%27%20x2%3D%27100%27%20y2%3D%27100%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27140%27%20y1%3D%2760%27%20x2%3D%27100%27%20y2%3D%27100%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2760%27%20y1%3D%27140%27%20x2%3D%27100%27%20y2%3D%27100%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27140%27%20y1%3D%27140%27%20x2%3D%27100%27%20y2%3D%27100%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%275%27%20fill%3D%27%23c0392b%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2760%27%20cy%3D%2760%27%20r%3D%273%27%20fill%3D%27%23c0392b%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27140%27%20cy%3D%2760%27%20r%3D%273%27%20fill%3D%27%23c0392b%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2760%27%20cy%3D%27140%27%20r%3D%273%27%20fill%3D%27%23c0392b%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27140%27%20cy%3D%27140%27%20r%3D%273%27%20fill%3D%27%23c0392b%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3ESPHERE%20INTERSECTION%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep03: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2728%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%271%27%20opacity%3D%270.9%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%275%27%20fill%3D%27%230e0e0e%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2730%27%20cy%3D%2740%27%20r%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27170%27%20cy%3D%2740%27%20r%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2720%27%20cy%3D%27130%27%20r%3D%278%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20opacity%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27180%27%20cy%3D%27130%27%20r%3D%278%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20opacity%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2780%27%20cy%3D%27180%27%20r%3D%276%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20opacity%3D%270.3%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27140%27%20cy%3D%27175%27%20r%3D%276%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20opacity%3D%270.3%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2750%27%20cy%3D%27170%27%20r%3D%274%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27%20opacity%3D%270.25%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2738%27%20y1%3D%2746%27%20x2%3D%2775%27%20y2%3D%2782%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.6%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27162%27%20y1%3D%2746%27%20x2%3D%27125%27%20y2%3D%2782%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.6%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2727%27%20y1%3D%27124%27%20x2%3D%2773%27%20y2%3D%27106%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27%20opacity%3D%270.35%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27174%27%20y1%3D%27124%27%20x2%3D%27127%27%20y2%3D%27106%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27%20opacity%3D%270.35%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2782%27%20y1%3D%27174%27%20x2%3D%2792%27%20y2%3D%27128%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.35%27%20opacity%3D%270.3%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27136%27%20y1%3D%27170%27%20x2%3D%27118%27%20y2%3D%27128%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.35%27%20opacity%3D%270.3%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27100%27%20cy%3D%27100%27%20r%3D%2728%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.5%27%20opacity%3D%270.3%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3EGRAPH%20RANKING%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep04: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%274%27%20y1%3D%2720%27%20x2%3D%27196%27%20y2%3D%2720%27%20stroke%3D%27%23d4d2c9%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%274%27%20y1%3D%2760%27%20x2%3D%27196%27%20y2%3D%2760%27%20stroke%3D%27%23d4d2c9%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%274%27%20y1%3D%27100%27%20x2%3D%27196%27%20y2%3D%27100%27%20stroke%3D%27%23d4d2c9%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%274%27%20y1%3D%27140%27%20x2%3D%27196%27%20y2%3D%27140%27%20stroke%3D%27%23d4d2c9%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%274%27%20y1%3D%27180%27%20x2%3D%27196%27%20y2%3D%27180%27%20stroke%3D%27%23d4d2c9%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27100%27%20y1%3D%274%27%20x2%3D%27100%27%20y2%3D%27196%27%20stroke%3D%27%23d4d2c9%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2720%27%20y%3D%2730%27%20width%3D%2760%27%20height%3D%27130%27%20fill%3D%27%230e0e0e%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2726%27%20y%3D%2736%27%20width%3D%2748%27%20height%3D%27118%27%20fill%3D%27%23f7f6f2%27%20opacity%3D%270.08%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2726%27%20y%3D%2790%27%20width%3D%2748%27%20height%3D%2724%27%20fill%3D%27%23f7f6f2%27%20opacity%3D%270.15%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2726%27%20y%3D%27130%27%20width%3D%2748%27%20height%3D%2716%27%20fill%3D%27%23f7f6f2%27%20opacity%3D%270.15%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2726%27%20y%3D%27146%27%20width%3D%2748%27%20height%3D%2716%27%20fill%3D%27%23f7f6f2%27%20opacity%3D%270.15%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27120%27%20y%3D%2730%27%20width%3D%2760%27%20height%3D%27130%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%271%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27126%27%20y%3D%2736%27%20width%3D%2748%27%20height%3D%27118%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.04%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27126%27%20y%3D%2790%27%20width%3D%2748%27%20height%3D%2724%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.08%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27126%27%20y%3D%27130%27%20width%3D%2748%27%20height%3D%2716%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.08%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27126%27%20y%3D%27146%27%20width%3D%2748%27%20height%3D%2716%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.08%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2780%27%20y1%3D%27100%27%20x2%3D%27120%27%20y2%3D%27100%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271.5%27/%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%27116%2C96%20121%2C100%20116%2C104%27%20fill%3D%27none%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%2710%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Eencrypting%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27118%27%20y%3D%2710%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Edecrypting%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3EASYMMETRIC%20/%20ONE-WAY%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep05: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2730%27%20y1%3D%2720%27%20x2%3D%2730%27%20y2%3D%27175%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20opacity%3D%270.6%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2730%27%20y1%3D%27175%27%20x2%3D%27185%27%20y2%3D%27175%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20opacity%3D%270.6%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2740%27%20y%3D%2760%27%20width%3D%27130%27%20height%3D%27100%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27%20stroke-dasharray%3D%273%203%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2790%27%20y%3D%2740%27%20width%3D%2780%27%20height%3D%27120%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27%20stroke-dasharray%3D%273%203%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2790%27%20y%3D%2760%27%20width%3D%2740%27%20height%3D%27100%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.06%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27110%27%20cy%3D%27100%27%20r%3D%278%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27110%27%20cy%3D%27100%27%20r%3D%272%27%20fill%3D%27%23c0392b%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2755%27%20cy%3D%2780%27%20r%3D%272%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2770%27%20cy%3D%27110%27%20r%3D%272%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2760%27%20cy%3D%27140%27%20r%3D%272%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2780%27%20cy%3D%2790%27%20r%3D%272%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2750%27%20cy%3D%27125%27%20r%3D%272%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27140%27%20cy%3D%2775%27%20r%3D%272%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27155%27%20cy%3D%27100%27%20r%3D%272%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27145%27%20cy%3D%27130%27%20r%3D%272%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27165%27%20cy%3D%2785%27%20r%3D%272%27%20fill%3D%27%230e0e0e%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2742%27%20y%3D%2757%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3EMatrix%20A%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2792%27%20y%3D%2737%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3EMatrix%20B%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3EMATRIX%20/%20RECOMMENDATION%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep06: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M10%20100%20Q20%2060%2030%20100%20Q40%20140%2050%20100%20Q60%2060%2070%20100%20Q80%20140%2090%20100%20Q100%2060%20110%20100%20Q120%20140%20130%20100%20Q140%2060%20150%20100%20Q160%20140%20170%20100%20Q180%2060%20190%20100%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271.5%27%20opacity%3D%270.9%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M10%20130%20Q50%20110%2090%20130%20Q130%20150%20170%20130%20Q185%20122%20190%20130%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M10%20148%20Q30%20143%2050%20148%20Q70%20153%2090%20148%20Q110%20143%20130%20148%20Q150%20153%20170%20148%20Q185%20145%20190%20148%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20opacity%3D%270.35%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M10%20158%20Q20%20156%2030%20158%20Q40%20160%2050%20158%20Q60%20156%2070%20158%20Q80%20160%2090%20158%20Q100%20156%20110%20158%20Q120%20160%20130%20158%20Q140%20156%20150%20158%20Q160%20160%20170%20158%20Q180%20156%20190%20158%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.35%27%20opacity%3D%270.2%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2790%27%20y1%3D%27100%27%20x2%3D%2790%27%20y2%3D%27126%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%2787%2C123%2090%2C128%2093%2C123%27%20fill%3D%27none%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2710%27%20y1%3D%27100%27%20x2%3D%27190%27%20y2%3D%27100%27%20stroke%3D%27%23d4d2c9%27%20stroke-width%3D%270.3%27%20stroke-dasharray%3D%274%204%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%2720%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23c0392b%27%3Ef%28x%29%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27138%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Ef%E2%82%81%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27155%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Ef%E2%82%82%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27166%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Ef%E2%82%83%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3ESIGNAL%20DECOMPOSITION%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep07: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2710%27%20y%3D%2788%27%20width%3D%2736%27%20height%3D%2724%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2728%27%20y%3D%27103%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%275%27%20fill%3D%27%230e0e0e%27%3EPACKET%20SOURCE%3C/text%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27154%27%20y%3D%2788%27%20width%3D%2736%27%20height%3D%2724%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27172%27%20y%3D%27103%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%275%27%20fill%3D%27%230e0e0e%27%3EDESTINATION%3C/text%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2770%27%20cy%3D%27100%27%20r%3D%274%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27130%27%20cy%3D%27100%27%20r%3D%274%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2782%27%20y%3D%2740%27%20width%3D%2716%27%20height%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2782%27%20y%3D%2760%27%20width%3D%2716%27%20height%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2782%27%20y%3D%2780%27%20width%3D%2716%27%20height%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2782%27%20y%3D%27100%27%20width%3D%2716%27%20height%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2782%27%20y%3D%27120%27%20width%3D%2716%27%20height%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2782%27%20y%3D%27140%27%20width%3D%2716%27%20height%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2746%27%20y1%3D%27100%27%20x2%3D%2766%27%20y2%3D%27100%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2770%27%20y1%3D%2796%27%20x2%3D%2783%27%20y2%3D%2745%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2770%27%20y1%3D%2796%27%20x2%3D%2783%27%20y2%3D%2765%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2770%27%20y1%3D%27100%27%20x2%3D%2783%27%20y2%3D%2785%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2770%27%20y1%3D%27100%27%20x2%3D%2783%27%20y2%3D%27105%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.6%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2770%27%20y1%3D%27104%27%20x2%3D%2783%27%20y2%3D%27125%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2770%27%20y1%3D%27104%27%20x2%3D%2783%27%20y2%3D%27145%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2798%27%20y1%3D%2745%27%20x2%3D%27126%27%20y2%3D%2797%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2798%27%20y1%3D%2765%27%20x2%3D%27126%27%20y2%3D%2798%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2798%27%20y1%3D%2785%27%20x2%3D%27126%27%20y2%3D%2799%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2798%27%20y1%3D%27105%27%20x2%3D%27126%27%20y2%3D%27100%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.6%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2798%27%20y1%3D%27125%27%20x2%3D%27126%27%20y2%3D%27101%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2798%27%20y1%3D%27145%27%20x2%3D%27126%27%20y2%3D%27103%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27134%27%20y1%3D%27100%27%20x2%3D%27154%27%20y2%3D%27100%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3ENETWORK%20ROUTING%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep08: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Cpolygon%20points%3D%2740%2C55%2055%2C45%2070%2C55%2070%2C75%2055%2C85%2040%2C75%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20fill%3D%27none%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2755%27%20y%3D%2768%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3EKey%20A%3C/text%3E%0A%20%20%20%20%20%20%3Cpolygon%20points%3D%2720%2C125%2033%2C112%2046%2C125%2046%2C148%2033%2C161%2020%2C148%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20fill%3D%27none%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2733%27%20y%3D%27140%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3EKey%20B%3C/text%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27100%27%20y%3D%2740%27%20width%3D%2728%27%20height%3D%27120%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27100%27%20y1%3D%2756%27%20x2%3D%27128%27%20y2%3D%2756%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27100%27%20y1%3D%2772%27%20x2%3D%27128%27%20y2%3D%2772%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27100%27%20y1%3D%2788%27%20x2%3D%27128%27%20y2%3D%2788%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27100%27%20y1%3D%27104%27%20x2%3D%27128%27%20y2%3D%27104%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27100%27%20y1%3D%27120%27%20x2%3D%27128%27%20y2%3D%27120%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27100%27%20y1%3D%27136%27%20x2%3D%27128%27%20y2%3D%27136%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2770%27%20y1%3D%2760%27%20x2%3D%27100%27%20y2%3D%27104%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2746%27%20y1%3D%27136%27%20x2%3D%27100%27%20y2%3D%27112%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27148%27%20y%3D%2796%27%20width%3D%2742%27%20height%3D%2718%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27148%27%20y%3D%27114%27%20width%3D%2742%27%20height%3D%2718%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27148%27%20y%3D%27132%27%20width%3D%2742%27%20height%3D%2718%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27169%27%20y%3D%27108%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%275%27%20fill%3D%27%23888780%27%3EKey%20A%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27169%27%20y%3D%27126%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%275%27%20fill%3D%27%23c0392b%27%3EKey%20B%3C/text%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27128%27%20y1%3D%27104%27%20x2%3D%27148%27%20y2%3D%27105%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27128%27%20y1%3D%27112%27%20x2%3D%27148%27%20y2%3D%27123%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3EHASH%20COLLISION%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep09: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M10%20100%20Q14%2070%2018%20100%20Q22%20130%2026%20100%20Q30%2070%2034%20100%20Q38%20130%2042%2060%20Q46%2030%2050%20100%20Q54%20140%2058%2080%20Q62%2050%2066%20100%20Q70%20130%2074%20100%20Q78%2070%2082%20100%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%271%27%20opacity%3D%270.7%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2788%27%20y1%3D%2760%27%20x2%3D%27110%27%20y2%3D%2730%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2788%27%20y1%3D%2775%27%20x2%3D%27110%27%20y2%3D%2755%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2788%27%20y1%3D%2790%27%20x2%3D%27110%27%20y2%3D%2780%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2788%27%20y1%3D%27100%27%20x2%3D%27110%27%20y2%3D%27100%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2788%27%20y1%3D%27110%27%20x2%3D%27110%27%20y2%3D%27118%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2788%27%20y1%3D%27122%27%20x2%3D%27110%27%20y2%3D%27138%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M110%2025%20Q190%2025%20190%2025%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27%20opacity%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M110%2050%20Q130%2050%20190%2050%20Q190%2050%20190%2050%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.6%27%20opacity%3D%270.45%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M110%2076%20Q120%2076%20190%2076%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20opacity%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M110%2098%20Q115%2098%20190%2098%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.45%27%20opacity%3D%270.35%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M110%20118%20Q113%20118%20190%20118%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27%20opacity%3D%270.3%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M110%20138%20Q112%20138%20190%20138%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.35%27%20opacity%3D%270.25%27/%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%27M110%20155%20Q111%20155%20190%20155%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.3%27%20opacity%3D%270.2%27/%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%27107%2C22%20112%2C25%20107%2C28%27%20fill%3D%27none%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%27107%2C47%20112%2C50%20107%2C53%27%20fill%3D%27none%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%27107%2C73%20112%2C76%20107%2C79%27%20fill%3D%27none%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3ESIGNAL%20DECOMPOSITION%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep10: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27100%27%20y%3D%2722%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%278%27%20font-weight%3D%27400%27%20fill%3D%27%230e0e0e%27%3ECACHE%20%28FULL%29%3C/text%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2730%27%20y%3D%2735%27%20width%3D%27140%27%20height%3D%27120%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2765%27%20y1%3D%2735%27%20x2%3D%2765%27%20y2%3D%27155%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27100%27%20y1%3D%2735%27%20x2%3D%27100%27%20y2%3D%27155%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27135%27%20y1%3D%2735%27%20x2%3D%27135%27%20y2%3D%27155%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2730%27%20y1%3D%2765%27%20x2%3D%27170%27%20y2%3D%2765%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2730%27%20y1%3D%2795%27%20x2%3D%27170%27%20y2%3D%2795%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2730%27%20y1%3D%27125%27%20x2%3D%27170%27%20y2%3D%27125%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2747%27%20y%3D%2754%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23888780%27%3EB0%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2782%27%20y%3D%2754%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23888780%27%3EB1%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27117%27%20y%3D%2754%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23888780%27%3EB2%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27152%27%20y%3D%2754%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23c0392b%27%3EB3%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2747%27%20y%3D%2784%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23888780%27%3EB4%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2782%27%20y%3D%2784%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23888780%27%3EB5%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27117%27%20y%3D%2784%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23888780%27%3EB6%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27152%27%20y%3D%2784%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23888780%27%3EB7%3C/text%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27135%27%20y%3D%2735%27%20width%3D%2735%27%20height%3D%2730%27%20fill%3D%27%23c0392b%27%20opacity%3D%270.08%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27170%27%20y1%3D%2750%27%20x2%3D%27182%27%20y2%3D%2750%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%27180%2C46%20185%2C50%20180%2C54%27%20fill%3D%27none%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%27186%27%20y%3D%2740%27%20width%3D%2710%27%20height%3D%2720%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27191%27%20y%3D%2754%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%275%27%20fill%3D%27%23c0392b%27%3EB3%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3ELRU%20/%20MEMORY%20PRIORITY%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep11: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2710%27%20y%3D%2730%27%20width%3D%27180%27%20height%3D%2722%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2736%27%20y1%3D%2730%27%20x2%3D%2736%27%20y2%3D%2752%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2762%27%20y1%3D%2730%27%20x2%3D%2762%27%20y2%3D%2752%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2788%27%20y1%3D%2730%27%20x2%3D%2788%27%20y2%3D%2752%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27114%27%20y1%3D%2730%27%20x2%3D%27114%27%20y2%3D%2752%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27140%27%20y1%3D%2730%27%20x2%3D%27140%27%20y2%3D%2752%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27166%27%20y1%3D%2730%27%20x2%3D%27166%27%20y2%3D%2752%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2723%27%20y%3D%2744%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3E0%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2749%27%20y%3D%2744%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23c0392b%27%3E1%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2775%27%20y%3D%2744%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3E0%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27101%27%20y%3D%2744%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23c0392b%27%3E1%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27127%27%20y%3D%2744%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3E0%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27153%27%20y%3D%2744%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23c0392b%27%3E1%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27179%27%20y%3D%2744%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3E0%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%2780%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Eh%E2%82%81%28x%29%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%2794%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Eh%E2%82%82%28x%29%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27108%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Eh%E2%82%83%28x%29%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27122%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Eh%E2%82%84%28x%29%3C/text%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2742%27%20y1%3D%2780%27%20x2%3D%2749%27%20y2%3D%2752%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20stroke-dasharray%3D%272%202%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2742%27%20y1%3D%2794%27%20x2%3D%2775%27%20y2%3D%2752%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20stroke-dasharray%3D%272%202%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2742%27%20y1%3D%27108%27%20x2%3D%27101%27%20y2%3D%2752%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27%20stroke-dasharray%3D%272%202%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2742%27%20y1%3D%27122%27%20x2%3D%27153%27%20y2%3D%2752%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.5%27%20stroke-dasharray%3D%272%202%27/%3E%0A%20%20%20%20%20%20%3Crect%20x%3D%2710%27%20y%3D%27145%27%20width%3D%2758%27%20height%3D%2716%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2739%27%20y%3D%27157%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%230e0e0e%27%3EQUERY%20A%3C/text%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2768%27%20y1%3D%27153%27%20x2%3D%2790%27%20y2%3D%27153%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Cpolyline%20points%3D%2787%2C149%2092%2C153%2087%2C157%27%20fill%3D%27none%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2796%27%20y%3D%27150%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23888780%27%3EALL%20BITS%20%3D%201%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2796%27%20y%3D%27160%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23c0392b%27%3EPROBABLY%20IN%20SET%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3EPROBABILISTIC%20MEMBERSHIP%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+  ep12: "data:image/svg+xml,%3Csvg%20viewBox%3D%270%200%20200%20200%27%20fill%3D%27none%27%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20style%3D%27width%3A100%25%3Bheight%3A100%25%3Bbackground%3A%23f7f6f2%27%3E%0A%20%20%20%20%20%20%3Crect%20width%3D%27200%27%20height%3D%27200%27%20fill%3D%27%23f7f6f2%27/%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2730%27%20cy%3D%27100%27%20r%3D%2712%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2730%27%20y%3D%27104%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%230e0e0e%27%3Es%3C/text%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2780%27%20cy%3D%2760%27%20r%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2780%27%20y%3D%2764%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Ea%3C/text%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%2780%27%20cy%3D%27140%27%20r%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2780%27%20y%3D%27144%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Ec%3C/text%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27130%27%20cy%3D%2780%27%20r%3D%2710%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27130%27%20y%3D%2784%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23c0392b%27%3Eb%3C/text%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27130%27%20cy%3D%27130%27%20r%3D%2710%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.5%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27130%27%20y%3D%27134%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Ef%3C/text%3E%0A%20%20%20%20%20%20%3Ccircle%20cx%3D%27175%27%20cy%3D%27100%27%20r%3D%2712%27%20stroke%3D%27%230e0e0e%27%20stroke-width%3D%270.75%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%27175%27%20y%3D%27104%27%20text-anchor%3D%27middle%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%3Eg%3C/text%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2742%27%20y1%3D%2796%27%20x2%3D%2770%27%20y2%3D%2766%27%20stroke%3D%27%23888780%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2742%27%20y1%3D%27104%27%20x2%3D%2770%27%20y2%3D%27134%27%20stroke%3D%27%23888780%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2742%27%20y1%3D%27100%27%20x2%3D%27120%27%20y2%3D%2782%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%3Cpolyline%20points%3D%27117%2C78%20122%2C82%20117%2C86%27%20fill%3D%27none%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27140%27%20y1%3D%2780%27%20x2%3D%27163%27%20y2%3D%2794%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%3Cpolyline%20points%3D%27159%2C91%20165%2C95%20160%2C98%27%20fill%3D%27none%27%20stroke%3D%27%23c0392b%27%20stroke-width%3D%271%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2788%27%20y1%3D%2756%27%20x2%3D%27120%27%20y2%3D%2776%27%20stroke%3D%27%23888780%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%2788%27%20y1%3D%27144%27%20x2%3D%27120%27%20y2%3D%27126%27%20stroke%3D%27%23888780%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Cline%20x1%3D%27140%27%20y1%3D%27128%27%20x2%3D%27163%27%20y2%3D%27108%27%20stroke%3D%27%23888780%27%20stroke-width%3D%270.4%27/%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27180%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%276%27%20fill%3D%27%23c0392b%27%3Es%E2%86%92b%E2%86%92e%E2%86%92f%E2%86%92g%20%20d%3D6%3C/text%3E%0A%20%20%20%20%20%20%3Ctext%20x%3D%2710%27%20y%3D%27193%27%20font-family%3D%27IBM%20Plex%20Mono%2Cmonospace%27%20font-size%3D%277%27%20fill%3D%27%23888780%27%20letter-spacing%3D%271%27%3ESHORTEST%20PATH%3C/text%3E%0A%20%20%20%20%3C/svg%3E",
+};
+const EPISODES = [{key:"ep01",num:"01",title:"Remainder",mech:"Diffusion / Noise Subtraction"},{key:"ep02",num:"02",title:"Triangulation",mech:"GPS / Sphere Intersection"},{key:"ep03",num:"03",title:"PageRank",mech:"Graph Ranking / Link Weight"},{key:"ep04",num:"04",title:"Public Key",mech:"Asymmetric / One-Way"},{key:"ep05",num:"05",title:"Collaborative Filtering",mech:"Matrix / Recommendation"},{key:"ep06",num:"06",title:"Gradient Descent",mech:"Loss Minimization"},{key:"ep07",num:"07",title:"Packet Switching",mech:"Network Routing"},{key:"ep08",num:"08",title:"Hash Collision",mech:"Deterministic Mapping"},{key:"ep09",num:"09",title:"Fourier Transform",mech:"Signal Decomposition"},{key:"ep10",num:"10",title:"Cache Eviction",mech:"LRU / Memory Priority"},{key:"ep11",num:"11",title:"Bloom Filter",mech:"Probabilistic Membership"},{key:"ep12",num:"12",title:"Dijkstra's Algorithm",mech:"Shortest Path"}];
+
+function showSection(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+(function buildFilmGrid(){
+  const grid=document.getElementById('films-grid');
+  EPISODES.forEach((ep,i)=>{
+    const card=document.createElement('div');
+    card.className='film-card';
+    card.onclick=()=>openLightbox(i);
+    card.innerHTML=`
+      <div class="fiw">
+        <img class="fi" src="${IMGS[ep.key]}" alt="${ep.title}" loading="lazy">
+        <div class="fo">
+          <div class="fp"><svg viewBox="0 0 10 10" fill="#c0392b"><polygon points="2,1 9,5 2,9"/></svg></div>
+        </div>
+      </div>
+      <div class="film-info">
+        <div class="fe">EP. ${ep.num}</div>
+        <div class="ft">${ep.title}</div>
+        <div class="fm">${ep.mech}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+})();
+
+let lbIndex=0;
+function openLightbox(i){lbIndex=i;renderLightbox();document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+function renderLightbox(){
+  const ep=EPISODES[lbIndex];
+  document.getElementById('lb-ep').textContent='EP. '+ep.num+'  ·  Underneath';
+  document.getElementById('lb-title').textContent=ep.title;
+  document.getElementById('lb-mech').textContent=ep.mech;
+  document.getElementById('lb-img').src=IMGS[ep.key];
+  document.getElementById('lb-img').alt=ep.title;
+  document.getElementById('lb-counter').textContent=(lbIndex+1)+' / '+EPISODES.length;
+  document.getElementById('lb-prev').disabled=lbIndex===0;
+  document.getElementById('lb-next').disabled=lbIndex===EPISODES.length-1;
+  const dotsEl=document.getElementById('lb-dots');
+  dotsEl.innerHTML='';
+  EPISODES.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='lb-dot'+(i===lbIndex?' active':'');
+    d.onclick=()=>{lbIndex=i;renderLightbox();};
+    dotsEl.appendChild(d);
+  });
+}
+function lbNav(dir){lbIndex=Math.max(0,Math.min(EPISODES.length-1,lbIndex+dir));renderLightbox();}
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lightbox').classList.contains('open'))return;
+  if(e.key==='ArrowRight')lbNav(1);
+  if(e.key==='ArrowLeft')lbNav(-1);
+  if(e.key==='Escape')closeLightbox();
+});
+document.getElementById('lightbox').addEventListener('click',e=>{
+  if(e.target===document.getElementById('lightbox'))closeLightbox();
+});
+</script>
+</body>
+</html>
